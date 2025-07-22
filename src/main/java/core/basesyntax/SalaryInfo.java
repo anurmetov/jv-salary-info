@@ -2,9 +2,11 @@ package core.basesyntax;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.StringJoiner;
 
 public class SalaryInfo {
-    private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+    private static final DateTimeFormatter
+            DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("dd.MM.yyyy");
 
     public String getSalaryInfo(String[] names, String[] data, String dateFrom, String dateTo) {
         StringBuilder result = new StringBuilder();
@@ -17,20 +19,28 @@ public class SalaryInfo {
         for (String date : data) {
             String[] parts = date.split(" ");
             LocalDate employeeDate = LocalDate.parse(parts[0], DATE_TIME_FORMATTER);
-            if (employeeDate.isAfter(from) && employeeDate.isBefore(to)) {
+            if (!employeeDate.isBefore(from) && !employeeDate.isAfter(to)) {
                 // Iterating through names to get each salary
                 for (int j = 0; j < names.length; j++) {
                     if (parts[1].equals(names[j])) {
-                        salaryPerEmployee[j] += Integer.parseInt(parts[2]) * Integer.parseInt(parts[3]);
+                        salaryPerEmployee[j] += Integer.parseInt(parts[2])
+                                * Integer.parseInt(parts[3]);
                     }
                 }
             }
         }
 
-        result.append("Report for period ").append(dateFrom).append(" - ").append(dateTo).append(System.lineSeparator());
+        result.append("Report for period ")
+                .append(dateFrom)
+                .append(" - ")
+                .append(dateTo)
+                .append(System.lineSeparator());
+
+        StringJoiner joiner = new StringJoiner(System.lineSeparator());
         for (int i = 0; i < salaryPerEmployee.length; i++) {
-            result.append(names[i]).append(" - ").append(salaryPerEmployee[i]).append(System.lineSeparator());
+            joiner.add(names[i] + " - " + salaryPerEmployee[i]);
         }
+        result.append(joiner.toString());
 
         return result.toString();
     }
