@@ -11,8 +11,6 @@ public class SalaryInfo {
     private static final int HOURS_INDEX = 2;
     private static final int SALARY_PER_HOUR_INDEX = 3;
 
-
-
     public String getSalaryInfo(String[] names, String[] data, String dateFrom, String dateTo) {
         StringBuilder result = new StringBuilder();
 
